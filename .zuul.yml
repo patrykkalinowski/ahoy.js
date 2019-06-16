@@ -2,13 +2,12 @@ name: Ahoy.js
 ui: tape
 html: test/template.html
 scripts:
-  - node_modules/jquery/dist/jquery.js
-  - ahoy.js
+  - dist/ahoy.js
   - test/test_helper.js
 browsers:
   - name: chrome
     version: latest
   - name: safari
     version: latest
-  - name: ie
-    version: 11..latest
+  # - name: ie
+  #   version: latest

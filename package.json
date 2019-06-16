@@ -1,11 +1,18 @@
 {
   "name": "ahoy.js",
-  "version": "0.2.1",
+  "version": "0.3.4",
   "homepage": "https://github.com/ankane/ahoy.js",
   "description": "Simple, powerful JavaScript analytics",
-  "main": "ahoy.js",
+  "main": "dist/ahoy.js",
+  "module": "dist/ahoy.esm.js",
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint src",
+    "test": "zuul test/ahoy_test.js",
+    "test:local": "zuul --local 8080 test/ahoy_test.js"
+  },
   "dependencies": {
-    "jquery": ">1.9.0"
+    "object-to-formdata": "^1.6.4"
   },
   "keywords": [
     "analytics",
@@ -20,25 +27,19 @@
     "type": "git",
     "url": "https://github.com/ankane/ahoy.js"
   },
-  "ignore": [
-    "**/.*",
-    "test",
-    "tests"
+  "files": [
+    "dist"
   ],
   "devDependencies": {
-    "babel-preset-es2015": "^6.18.0",
-    "babelify": "^7.3.0",
-    "jquery": "^3.1.1",
-    "js-cookie": "^2.1.3",
-    "sinon": "^1.17.6",
-    "tape": "^4.6.3",
-    "zuul": "^3.11.1"
-  },
-  "scripts": {
-    "test": "zuul test/ahoy_test.js",
-    "test:local": "zuul --local 8080 test/ahoy_test.js"
-  },
-  "browserify": {
-    "transform": [ ["babelify", { "presets": [ "es2015" ] } ] ]
+    "eslint": "^5.16.0",
+    "faux-jax": "^5.0.6",
+    "js-cookie": "^2.2.0",
+    "rollup": "^1.12.0",
+    "rollup-plugin-buble": "^0.19.6",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.0.0",
+    "rollup-plugin-uglify": "^6.0.2",
+    "tape": "^4.10.1",
+    "zuul": "^3.12.0"
   }
 }

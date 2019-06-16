@@ -7,25 +7,26 @@
 
 Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
 
+[![Build Status](https://travis-ci.org/ankane/ahoy.js.svg?branch=master)](https://travis-ci.org/ankane/ahoy.js)
+
 ## Installation
 
-Download [ahoy.js](https://raw.githubusercontent.com/ankane/ahoy.js/master/ahoy.js) and include it after jQuery.
+Download [ahoy.js](https://unpkg.com/ahoy.js) and include it on your page.
 
 ```html
-<script src="jquery.js"></script>
 <script src="ahoy.js"></script>
 ```
 
-Or use Bower
+Or use Yarn:
 
 ```sh
-bower install ahoy
+yarn add ahoy.js
 ```
 
-Or use npm
+And import it with:
 
-```sh
-npm install ahoy.js
+```es6
+import ahoy from 'ahoy.js';
 ```
 
 ## How It Works
@@ -177,15 +178,24 @@ ahoy.configure({
   urlPrefix: "",
   visitsUrl: "/ahoy/visits",
   eventsUrl: "/ahoy/events",
-  cookieDomain: null,
   page: null,
   platform: "Web",
-  useBeacon: false,
-  startOnReady: true
+  useBeacon: true,
+  startOnReady: true,
+  trackVisits: true,
+  cookies: true,
+  cookieDomain: null,
+  headers: {},
+  visitParams: {},
+  withCredentials: false
 });
 ```
 
-## Subdomains
+When `trackVisits` is set to `false`, Ahoy.js will not attempt to create a visit
+on the server, but assumes that the server itself will return visit and visitor
+cookies.
+
+### Subdomains
 
 To track visits across multiple subdomains, use:
 
@@ -193,18 +203,53 @@ To track visits across multiple subdomains, use:
 ahoy.configure({cookieDomain: "yourdomain.com"});
 ```
 
-## Testing
+### Users
 
-1. Install the dependencies with `npm install`
-2. Run `npm run test:local` and open `http://localhost:8080/__zuul` in your browser
+Ahoy automatically associates users with visits and events if the user is authenticated on the server.
+
+If you use cookies for authentication and the JavaScript library is on the same subdomain as the server, no additional configuration is needed.
+
+If you use cookies and the JavaScript library is on a different domain or subdomain as the server, set:
+
+```javascript
+ahoy.configure({withCredentials: true});
+```
+
+This will [send credentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials) such as cookies, authorization headers or TLS client certificates to the server.
+
+If you use headers for authentication, pass them with:
+
+```javascript
+ahoy.configure({headers: {"Authorization": "Bearer ..."}})
+```
+
+### Fetch
+
+If you use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) to make requests and the JavaScript library is on a different domain or subdomain as the server, Ahoy cookies are not sent to the server by default. You can pass the info in headers with:
+
+```javascript
+fetch(url, {
+  headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
+})
+```
+
+## Dev Setup
+
+```sh
+git clone https://github.com/ankane/ahoy.js.git
+cd ahoy.js
+yarn install
+yarn build
+yarn test:local
+```
+
+And visit `http://localhost:8080/__zuul` in your browser.
 
 ## TODO
 
 - Send events in batches
 - Add page and section for automatic events
 - Add `trackContent` method
-- Remove jQuery dependency
-- Customize endpoints
 
 ## History
 
